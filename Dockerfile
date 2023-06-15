@@ -147,7 +147,10 @@ RUN pip install einops --no-cache-dir
 COPY proto proto
 COPY server server
 COPY server/Makefile server/Makefile
+RUN apt update && \
+    apt install git
 RUN cd server && \
+    make install install-flash-attention \
     make gen-server && \
     pip install -r requirements.txt && \
     pip install ".[bnb, accelerate]" --no-cache-dir
@@ -171,4 +174,4 @@ ENTRYPOINT ["./entrypoint.sh"]
 FROM base
 
 ENTRYPOINT ["text-generation-launcher"]
-CMD ["--json-output"]
+CMD ["--help"]
